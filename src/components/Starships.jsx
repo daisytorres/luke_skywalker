@@ -5,6 +5,8 @@ import axios from 'axios'
 export default function Starships(props) {
     const [data, setData] = useState()
     const { id } = useParams()
+    const [err, setErr] = useState(false) //to be used when we get a 404/error
+
 
     useEffect(() => {
         axios.get(`https://swapi.dev/api/starships/${id}`)
@@ -13,7 +15,8 @@ export default function Starships(props) {
                 setData(resp.data)
             })
             // .catch(err => console.log(err))
-            .catch(err => setData ())
+            //.catch(err => setData ())
+            .catch(err => setErr(true))
     }, [id])
 
 
@@ -31,12 +34,16 @@ export default function Starships(props) {
                             <p>Consumables: {data.consumables}</p>
                             <p> Starship Class: {data.starship_class}</p>
                         </div> :
-                            // <p>Loading..</p>
-                        <div>
-                            <p>Error: These aren't the droids you're looking for</p>
-                            <img style ={{height: 200, width: 250}} src="https://lumiere-a.akamaihd.net/v1/images/obi-wan-kenobi-main_3286c63c.jpeg?region=0%2C0%2C853%2C853"  alt="man"></img>
-                        </div>
-        }
+                        <p>Loading..</p>
+                }
+
+                {err ?
+                    <div>
+                    <p>Error: These aren't the droids you're looking for</p>
+                    <img style={{ height: 200, width: 250 }} src="https://lumiere-a.akamaihd.net/v1/images/obi-wan-kenobi-main_3286c63c.jpeg?region=0%2C0%2C853%2C853" alt="man"></img>
+                </div>
+                : <p></p>
+                }
             </div>
 
         </div>
